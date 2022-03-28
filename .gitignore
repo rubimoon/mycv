@@ -3,6 +3,7 @@
 /node_modules
 
 *.sqlite
+requests.http
 
 # Logs
 logs
