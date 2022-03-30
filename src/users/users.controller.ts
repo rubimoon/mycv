@@ -11,8 +11,8 @@ import {
   Session,
   UseGuards,
 } from '@nestjs/common';
-import { Serialize } from 'src/common';
-import { AuthGuard, AuthService, CurrentUser } from 'src/auth';
+import { Serialize } from '../common';
+import { AuthGuard, AuthService, CurrentUser } from '../auth';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto, UserDto } from './dtos';
 import { User } from './entities';
