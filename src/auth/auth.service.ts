@@ -19,10 +19,7 @@ export class AuthService {
       throw new BadRequestException('email in use');
     }
 
-    const salt = randomBytes(8).toString('hex');
-    const hash = (await scrypt(password, salt, 32)) as Buffer;
-    const hashedPassword = salt + '.' + hash.toString('hex');
-
+    const hashedPassword = await this.encryptPassword(password);
     const user = await this.usersService.create(email, hashedPassword);
     return user;
   }
@@ -32,13 +29,24 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('user not found');
     }
-    const [salt, storedHash] = user.password.split('.');
 
-    const hash = (await scrypt(password, salt, 32)) as Buffer;
-
-    if (storedHash !== hash.toString('hex')) {
+    const isValidate = await this.validatePassword(password, user.password);
+    if (!isValidate) {
       throw new BadRequestException('invalid credential');
     }
+
     return user;
+  }
+
+  private async encryptPassword(password: string) {
+    const salt = randomBytes(8).toString('hex');
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+    return salt + '.' + hash.toString('hex');
+  }
+
+  private async validatePassword(password: string, encryptedPassword: string) {
+    const [salt, storedHash] = encryptedPassword.split('.');
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+    return storedHash === hash.toString('hex');
   }
 }
