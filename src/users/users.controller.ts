@@ -29,10 +29,15 @@ export class UsersController {
     return await this.authService.signup(body.email, body.password);
   }
 
+  @Post('/signin')
+  async signin(@Body() body: CreateUserDto) {
+    return this.authService.signin(body.email, body.password);
+  }
+
   @Get('/:id')
   async findUser(@Param('id') id: string) {
     console.log('handler is running');
-    const user = await this.usersService.findOne(parseInt(id));
+    const user = await this.usersService.findById(parseInt(id));
     if (!user) {
       throw new NotFoundException('user not found');
     }
@@ -41,7 +46,7 @@ export class UsersController {
 
   @Get()
   async findAllUsers(@Query('email') email: string) {
-    return await this.usersService.find(email);
+    return await this.usersService.findByEmail(email);
   }
 
   @Patch('/:id')
