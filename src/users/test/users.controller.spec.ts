@@ -31,7 +31,9 @@ describe('UsersController', () => {
     };
     mockAuthService = {
       // signup: () => {},
-      // signin: () => {},
+      signin: (email: string, password: string) => {
+        return Promise.resolve({ id: 1, email, password } as User);
+      },
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -53,5 +55,36 @@ describe('UsersController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('findAllUsers returns a list of users with the given email', async () => {
+    const users = await controller.findAllUsers(TEST_DATA.email);
+    expect(users.length).toEqual(1);
+    expect(users[0].email).toEqual(TEST_DATA.email);
+  });
+
+  it('findUsers returns a single user with the given id', async () => {
+    const user = await controller.findUser(TEST_DATA.id.toString());
+    expect(user).toBeDefined();
+  });
+
+  it('findUser throws an error if user with given id is not found', async () => {
+    mockUsersServices.findOne = () => null;
+    await expect(
+      controller.findUser(TEST_DATA.id.toString()),
+    ).rejects.toThrow();
+  });
+
+  it('signin updates session object and returns user', async () => {
+    const session = { userId: -10 };
+    const user = await controller.signin(
+      {
+        email: TEST_DATA.email,
+        password: TEST_DATA.password,
+      },
+      session,
+    );
+    expect(user.id).toEqual(TEST_DATA.id);
+    expect(session.userId).toEqual(TEST_DATA.id);
   });
 });
