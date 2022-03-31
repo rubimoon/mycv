@@ -5,6 +5,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -51,8 +52,8 @@ export class UsersController {
   }
 
   @Get('/:id')
-  async findUser(@Param('id') id: string) {
-    const user = await this.usersService.findOne(parseInt(id));
+  async findUser(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.usersService.findOne(id);
     if (!user) {
       throw new NotFoundException('user not found');
     }
@@ -65,12 +66,15 @@ export class UsersController {
   }
 
   @Patch('/:id')
-  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    await this.usersService.update(parseInt(id), body);
+  async updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateUserDto,
+  ) {
+    await this.usersService.update(id, body);
   }
 
   @Delete('/:id')
-  async removeUser(@Param('id') id: string) {
-    return await this.usersService.remove(parseInt(id));
+  async removeUser(@Param('id', ParseIntPipe) id: number) {
+    return await this.usersService.remove(id);
   }
 }

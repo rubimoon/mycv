@@ -72,15 +72,13 @@ describe('UsersController', () => {
   });
 
   it('findUsers returns a single user with the given id', async () => {
-    const user = await controller.findUser(TEST_DATA.id.toString());
+    const user = await controller.findUser(TEST_DATA.id);
     expect(user).toBeDefined();
   });
 
   it('findUser throws an error if user with given id is not found', async () => {
     mockUsersServices.findOne = () => null;
-    await expect(
-      controller.findUser(TEST_DATA.id.toString()),
-    ).rejects.toThrow();
+    await expect(controller.findUser(TEST_DATA.id)).rejects.toThrow();
   });
 
   it('signin updates session object and returns user', async () => {
