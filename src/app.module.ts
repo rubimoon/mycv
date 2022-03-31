@@ -5,8 +5,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
-// import { User } from './entities';
-// import { Report } from './entities/report';
 import * as session from 'express-session';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configureOrm from './config/ormconfig';
