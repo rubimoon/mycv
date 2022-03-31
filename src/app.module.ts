@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
-import { User } from './users/entities/user';
+import { User } from './entities';
 import { Report } from './reports/report.entity';
 import * as session from 'express-session';
 import { ConfigModule, ConfigService } from '@nestjs/config';

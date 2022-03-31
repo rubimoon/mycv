@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '../users.controller';
 import { UsersService } from '../users.service';
 import { AuthService } from '../../auth';
-import { User } from '../entities';
+import { User } from '../../entities';
 import faker from '@faker-js/faker';
 
 const TEST_DATA = {
