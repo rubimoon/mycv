@@ -5,28 +5,22 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
-import { User } from './entities';
-import { Report } from './entities/report';
+// import { User } from './entities';
+// import { Report } from './entities/report';
 import * as session from 'express-session';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import configureOrm from './config/ormconfig';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `${process.env.NODE_ENV}.env`,
+      envFilePath: `src/config/env/${process.env.NODE_ENV}.env`,
     }),
 
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: async (config: ConfigService) => {
-        return {
-          type: 'sqlite',
-          database: config.get<string>('DB_NAME'),
-          synchronize: true,
-          entities: [User, Report],
-        };
-      },
+      useFactory: async (config: ConfigService) => configureOrm(config),
     }),
     UsersModule,
     ReportsModule,
