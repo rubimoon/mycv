@@ -3,9 +3,13 @@ import { UsersController } from '../users.controller';
 import { UsersService } from '../users.service';
 import { AuthService } from '../../auth';
 import { User } from '../entities';
-import { users } from '../../database/seeders/users';
+import faker from '@faker-js/faker';
 
-const TEST_DATA = users[0];
+const TEST_DATA = {
+  id: 1,
+  email: faker.internet.email(),
+  password: faker.internet.password(),
+};
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -23,7 +27,11 @@ describe('UsersController', () => {
       },
       find: (email: string) => {
         return Promise.resolve([
-          { id: TEST_DATA.id, email, password: TEST_DATA.password } as User,
+          {
+            id: TEST_DATA.id,
+            email,
+            password: TEST_DATA.password,
+          } as User,
         ]);
       },
       // remove: () => {},
