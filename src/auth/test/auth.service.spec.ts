@@ -1,11 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { AuthService } from '../auth.service';
 import { User, UsersService } from '../../users';
+import { users } from '../../database/seeders/users';
 
-const TEST_DATA = {
-  email: 'test@test.com',
-  password: 'password',
-};
+const TEST_DATA = users[0];
 
 describe('AuthService', () => {
   let service: AuthService;
