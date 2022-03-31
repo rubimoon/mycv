@@ -4,6 +4,7 @@
 
 *.sqlite
 requests.http
+*.env
 
 # Logs
 logs
