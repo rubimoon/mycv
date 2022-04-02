@@ -35,11 +35,12 @@ import configureOrm from './config/ormconfig';
   ],
 })
 export class AppModule {
+  constructor(private configService: ConfigService) {}
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(
         session({
-          secret: 'asdfg',
+          secret: this.configService.get<string>('COOKIE_KEY'),
           resave: false,
           saveUninitialized: false,
           cookie: { secure: false },
