@@ -7,19 +7,14 @@ import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
 import * as session from 'express-session';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configureOrm from './config/ormconfig';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `src/config/env/${process.env.NODE_ENV}.env`,
+      envFilePath: `${process.env.NODE_ENV}.env`,
     }),
-
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => configureOrm(config),
-    }),
+    TypeOrmModule.forRoot(),
     UsersModule,
     ReportsModule,
   ],
