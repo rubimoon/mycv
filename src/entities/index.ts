@@ -1,2 +1,2 @@
-export * from './user';
-export * from './report';
+export * from './user.entity';
+export * from './report.entity';
